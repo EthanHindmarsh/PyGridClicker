@@ -1,0 +1,31 @@
+everskiesP(lanet)P(opper).py requires:
+
+
+1.
+pillow (Windows/Mac)
+ OR
+pyscreenshot (Linux)
+
+2.
+pyuserinput
+
+Note:
+Further requirements for pyuserinput are as follows:
+* Linux - Xlib
+* Mac - Quartz, AppKit
+* Windows - pywin32, pyHook
+
+3.
+json
+
+
+4.
+time, datetime, keyboard
+(Should already be installed)
+
+
+
+Questions/Bugs can be directed to:
+fluffypigpie@gmail.com
+or
+https://github.com/FluffyPigPie
