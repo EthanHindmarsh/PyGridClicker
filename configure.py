@@ -3,28 +3,19 @@ import json
 def confirm():
     print("")
 
-def rowPrint(xr,yr,xpo,ypo):
-    d = [["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"],
-         ["O","O","O","O","O","O","O","O","O"]
-         ]
-    for list in d:
-        if yr != -1:
-            list[yr]="X"
-    if xr != -1:
-        d[xr] = ["X","X","X","X","X","X","X","X","X"]
-    if xpo != -1:
-        n=d[xpo]
-        if ypo != -1:
-           n[ypo]="X"
-        d[xpo]=n
-    for list in d:
+# custom function
+def rowPrint(xrow=-1,yrow=-1,xpos=-1,ypos=-1,width=9,height=9):
+    rows = [["O"]*width for _ in range(height)]
+    for list in rows:
+        if yrow != -1:
+            list[yrow]="X"
+    if xrow != -1:
+        rows[xrow] = ["X"]*width
+    if ypos != -1:
+        n=rows[ypos]
+        if xpos != -1:
+           n[xpos]="X"
+    for list in rows:
         printable=""
         for str in list:
             printable+=" "+str
@@ -62,7 +53,7 @@ def confLoopMax():
         return int(input("How many times should I scan the screen for planets before refreshing?: (default: 50) "))
 
 
-def confXPos():
+def confxposs():
     import keyboard
     from pymouse import PyMouse
     m=PyMouse()
@@ -71,16 +62,16 @@ def confXPos():
     print("We will now select the X Positions of the planets.")
     print("Please have your browser ready with the site open, and it is recommended that you maximize the window.")
     input("Press enter when ready: ")
-    xposl=[]
+    xpossl=[]
     for x in range(9):
         print("------------------------")
         rowPrint(-1,-1,8,x)
         print("Please press W when you have your mouse hovered over this planet.")
         keyboard.wait('w')
-        xposl.append(m.position()[0])
-    return xposl
+        xpossl.append(m.position()[0])
+    return xpossl
 
-def confYPos():
+def confyposs():
     import keyboard
     from pymouse import PyMouse
     m=PyMouse()
@@ -89,14 +80,14 @@ def confYPos():
     print("We will now select the Y Positions of the planets.")
     print("Please have your browser ready with the site open, and it is recommended that you maximize the window.")
     input("Press enter when ready: ")
-    yposl=[]
+    ypossl=[]
     for y in range(9):
         print("------------------------")
         rowPrint(-1,-1,y,0)
         print("Please press W when you have your mouse hovered over this planet.")
         keyboard.wait('w')
-        yposl.append(m.position()[1])
-    return yposl
+        ypossl.append(m.position()[1])
+    return ypossl
 
 def confRestartXY():
     import keyboard
@@ -137,8 +128,8 @@ def retry(currentJson):
         print("To redo configuration, type retry.")
         print("To edit the speed, type speed.")
         print("To edit the loopmax, type loopmax.")
-        print("To edit the xpos, type xpos.")
-        print("To edit the ypos, type ypos.")
+        print("To edit the xposs, type xposs.")
+        print("To edit the yposs, type yposs.")
         print("To edit the RestartXY, type RestartXY.")
         print("To edit the RefreshXY, type RefreshXY.")
         print("Type Cancel to cancel.")
@@ -149,12 +140,12 @@ def retry(currentJson):
         elif wrongSetting == "loopmax":
             newmax=confLoopMax()
             currentJson['loopmax']=newmax
-        elif wrongSetting == "xpos":
-            newxpos=confXPos()
-            currentJson['xpos']=newxpos
-        elif wrongSetting == "ypos":
-            newypos=confYPos()
-            currentJson['ypos']=newypos
+        elif wrongSetting == "xposs":
+            newxposs=confxposs()
+            currentJson['xposs']=newxposs
+        elif wrongSetting == "yposs":
+            newyposs=confyposs()
+            currentJson['yposs']=newyposs
         elif wrongSetting == "restartxy":
             newrestxy=confRestartXY() 
             currentJson['restartXY']=newrestxy
@@ -207,19 +198,19 @@ def configure(configFile):
         cmode=0
     emptyConfig={"speed" : 0,
                   "loopmax" : 0,
-                  "xpos" : [],
-                  "ypos" : [],
+                  "xposs" : [],
+                  "yposs" : [],
                   "restartXY" : [],
                   "refreshXY" : []}
     print("Entering mode %s"%(cmode))
     if cmode == 0:
         configFile.write(json.dumps(emptyConfig))
         confSpeedr=confSpeed()
-        confLoopMaxr=confLoopMax()
+        confLoopMaxrow=confLoopMax()
         currentSettings={"speed" : confSpeedr,
-                         "loopmax" : confLoopMaxr,
-                         "xpos" : confXPos(),
-                         "ypos" : confYPos(),
+                         "loopmax" : confLoopMaxrow,
+                         "xposs" : confxposs(),
+                         "yposs" : confyposs(),
                          "restartXY" : confRestartXY(),
                          "refreshXY" : confRefreshXY()}
         print("Current settings: %s"%(currentSettings))
