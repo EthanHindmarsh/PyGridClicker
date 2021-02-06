@@ -30,11 +30,6 @@ def saveJson(currentJson):
     print(currentJson)
     print("Exiting.")
     quit()
-    import sys
-    sys.exit(0)
-    print("If you are seeing this, please press CTRL+C")
-    import time
-    time.sleep(100000)
 
 def confSpeed():
     print("------------------------")
@@ -53,7 +48,7 @@ def confLoopMax():
         return int(input("How many times should I scan the screen for planets before refreshing?: (default: 50) "))
 
 
-def confxposs():
+def confxpos():
     import keyboard
     from pymouse import PyMouse
     m=PyMouse()
@@ -62,16 +57,16 @@ def confxposs():
     print("We will now select the X Positions of the planets.")
     print("Please have your browser ready with the site open, and it is recommended that you maximize the window.")
     input("Press enter when ready: ")
-    xpossl=[]
+    xposl=[]
     for x in range(9):
         print("------------------------")
         rowPrint(-1,-1,8,x)
         print("Please press W when you have your mouse hovered over this planet.")
         keyboard.wait('w')
-        xpossl.append(m.position()[0])
-    return xpossl
+        xposl.append(m.position()[0])
+    return xposl
 
-def confyposs():
+def confypos():
     import keyboard
     from pymouse import PyMouse
     m=PyMouse()
@@ -80,14 +75,14 @@ def confyposs():
     print("We will now select the Y Positions of the planets.")
     print("Please have your browser ready with the site open, and it is recommended that you maximize the window.")
     input("Press enter when ready: ")
-    ypossl=[]
+    yposl=[]
     for y in range(9):
         print("------------------------")
         rowPrint(-1,-1,y,0)
         print("Please press W when you have your mouse hovered over this planet.")
         keyboard.wait('w')
-        ypossl.append(m.position()[1])
-    return ypossl
+        yposl.append(m.position()[1])
+    return yposl
 
 def confRestartXY():
     import keyboard
@@ -128,8 +123,8 @@ def retry(currentJson):
         print("To redo configuration, type retry.")
         print("To edit the speed, type speed.")
         print("To edit the loopmax, type loopmax.")
-        print("To edit the xposs, type xposs.")
-        print("To edit the yposs, type yposs.")
+        print("To edit the xpos, type xpos.")
+        print("To edit the ypos, type ypos.")
         print("To edit the RestartXY, type RestartXY.")
         print("To edit the RefreshXY, type RefreshXY.")
         print("Type Cancel to cancel.")
@@ -140,12 +135,12 @@ def retry(currentJson):
         elif wrongSetting == "loopmax":
             newmax=confLoopMax()
             currentJson['loopmax']=newmax
-        elif wrongSetting == "xposs":
-            newxposs=confxposs()
-            currentJson['xposs']=newxposs
-        elif wrongSetting == "yposs":
-            newyposs=confyposs()
-            currentJson['yposs']=newyposs
+        elif wrongSetting == "xpos":
+            newxposs=confxpos()
+            currentJson['xpos']=newxposs
+        elif wrongSetting == "ypos":
+            newyposs=confypos()
+            currentJson['ypss']=newyposs
         elif wrongSetting == "restartxy":
             newrestxy=confRestartXY() 
             currentJson['restartXY']=newrestxy
@@ -162,6 +157,8 @@ def retry(currentJson):
             if continuevar == "n":
                 done=1
     return currentJson
+
+#could use a switch statement
 
 def checkConfirm(currentJson):
     print("------------------------")
@@ -198,8 +195,8 @@ def configure(configFile):
         cmode=0
     emptyConfig={"speed" : 0,
                   "loopmax" : 0,
-                  "xposs" : [],
-                  "yposs" : [],
+                  "xpos" : [],
+                  "ypos" : [],
                   "restartXY" : [],
                   "refreshXY" : []}
     print("Entering mode %s"%(cmode))
@@ -209,8 +206,8 @@ def configure(configFile):
         confLoopMaxrow=confLoopMax()
         currentSettings={"speed" : confSpeedr,
                          "loopmax" : confLoopMaxrow,
-                         "xposs" : confxposs(),
-                         "yposs" : confyposs(),
+                         "xpos" : confxpos(),
+                         "ypos" : confypos(),
                          "restartXY" : confRestartXY(),
                          "refreshXY" : confRefreshXY()}
         print("Current settings: %s"%(currentSettings))
